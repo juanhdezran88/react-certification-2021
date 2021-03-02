@@ -5,7 +5,7 @@ const Card = ({title, imageURL, description, publishedDate}) => {
   return (
     <CardWrapper className="ui card" data-testid="card-wrapper">
       <a className="image" href="/">
-        <Image style={{backgroundImage: `url(${imageURL})`}} />
+        <Image backgroundImage={imageURL} />
       </a>
       <div className="content">
         <a className="header" href="/">{title}</a>
