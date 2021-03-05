@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const HeaderPanel = styled.div`
-  background-color: #e93d44;
+  background-color: ${(props) => props.theme.primaryBg};
   width: 100%;
   height: 50px;
   display: flex;

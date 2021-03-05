@@ -1,12 +1,14 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import Card from '../Card';
 
 const cardProps = {
+  videoId: 'wdyg367t3',
   title: 'Wizeline',
   imageURL: 'https://i.ytimg.com/vi/nmXMgqjQzls/mqdefault.jpg',
   description: 'description',
   publishedDate: '2019-09-30T23:54:32Z',
+  showDetail: jest.fn(),
 };
 
 describe('Card component', () => {
@@ -53,5 +55,12 @@ describe('Card component', () => {
     expect(publishedDatesList).toHaveLength(1);
     expect(publishedDate).toHaveClass('published-date');
     expect(publishedDate).toHaveTextContent(cardProps.publishedDate);
+  });
+
+  it('should call showDetail function when click on it', () => {
+    render(<Card {...cardProps} />);
+    const card = screen.getByTestId('card-wrapper');
+    fireEvent.click(card);
+    expect(cardProps.showDetail).toHaveBeenCalled();
   });
 });

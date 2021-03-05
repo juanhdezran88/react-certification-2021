@@ -13,6 +13,7 @@ const Image = styled.div`
 
 const CardWrapper = styled.div`
   min-height: 28rem !important;
+  cursor: pointer;
 `;
 
 export { Image, CardWrapper };

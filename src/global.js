@@ -10,6 +10,9 @@ const GlobalStyle = createGlobalStyle`
   *::after {
     box-sizing: border-box;
   }
+  .modals.modal-wrapper {
+    display: flex !important;
+  }
 `;
 
 export default GlobalStyle;

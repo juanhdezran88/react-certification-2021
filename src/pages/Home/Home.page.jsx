@@ -1,21 +1,37 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import GlobalContext from '../../utils/globalContext';
 import Sidebar from '../../components/Sidebar';
 import Header from '../../components/Header';
 import Card from '../../components/Card';
-
+import Modal from '../../components/Modal';
 import { Homepage, Main, ContentWrapper } from './styled';
-import videos from '../../providers/mock/youtube-videos-mock.json';
 
 function HomePage() {
-  const { items = [] } = videos;
+  const { videos } = useContext(GlobalContext);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedVideo, setSelectedVideo] = useState({
+    title: '',
+    description: '',
+    videoId: '',
+  });
+
+  const closeDetail = () => {
+    setShowModal(false);
+  };
+
+  const showDetail = (data) => {
+    setSelectedVideo(data);
+    setShowModal(true);
+  };
 
   return (
     <Homepage className="homepage" data-testid="home-page">
       <Sidebar />
       <Main>
         <Header />
+        {showModal && <Modal {...selectedVideo} closeAction={closeDetail} />}
         <ContentWrapper>
-          {items.map((video) => {
+          {videos.map((video, i) => {
             const {
               id: { videoId = '' } = {},
               snippet: {
@@ -27,11 +43,13 @@ function HomePage() {
             } = video;
             return (
               <Card
-                key={videoId}
+                key={videoId + i}
+                videoId={videoId}
                 title={title}
                 imageURL={url}
                 description={description}
                 publishedDate={new Date(publishedAt).toDateString()}
+                showDetail={showDetail}
               />
             );
           })}
