@@ -24,7 +24,7 @@ const HeaderPanel = styled.div`
 
 const SearchInput = styled.input`
   border-radius: 8px;
-  border: 1pt #f77529 solid;
+  border: 1pt ${(props) => props.theme.secondaryBg} solid;
   flex: 1;
   padding: 10px;
 `;
@@ -42,4 +42,8 @@ const Toggle = styled.div`
   padding: 8px;
 `;
 
-export { HeaderPanel, SearchInput, ControlPanel, Toggle };
+const Btn = styled.div`
+  background-color: ${(props) => props.theme.tertiaryBg} !important;
+`;
+
+export { HeaderPanel, SearchInput, ControlPanel, Toggle, Btn };

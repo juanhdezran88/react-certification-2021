@@ -1,10 +1,5 @@
 import { createContext } from 'react';
 
-const GlobalContext = createContext({
-  theme: 'main',
-  videos: [],
-  setVideos: () => {},
-  setTheme: () => {},
-});
+const GlobalContext = createContext();
 
 export default GlobalContext;

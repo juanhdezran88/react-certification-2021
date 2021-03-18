@@ -12,6 +12,7 @@ const Image = styled.div`
 `;
 
 const CardWrapper = styled.div`
+  background-color: ${(props) => props.theme.lightBg} !important;
   min-height: 28rem !important;
   cursor: pointer;
 `;

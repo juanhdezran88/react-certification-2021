@@ -1,12 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import GlobalContext from '../../utils/globalContext';
-import { HeaderPanel, SearchInput, ControlPanel, Toggle } from './styled';
+import { HeaderPanel, SearchInput, ControlPanel, Toggle, Btn } from './styled';
 import useYoutube from '../../utils/hooks/useYoutube';
 
 const Header = () => {
-  const { setTheme, setVideos } = useContext(GlobalContext);
+  const { state, dispatch } = useContext(GlobalContext);
   const { search, isYoutubeReady } = useYoutube();
-  const [query, setQuery] = useState('Wizeline');
 
   useEffect(() => {
     if(isYoutubeReady) {
@@ -16,7 +15,7 @@ const Header = () => {
 
   const handleDarkMode = (e) => {
     const isChecked = e.target.checked;
-    setTheme(isChecked ? 'dark' : 'main');
+    dispatch({ type: 'SET_THEME', payload: isChecked ? 'dark' : 'main' });
   };
 
   const handleSearch = async (e) => {
@@ -26,36 +25,36 @@ const Header = () => {
   };
 
   const executeSearch = async () => {
-    const resultSearch = await search(query);
-    setVideos(resultSearch.result.items);
+    const resultSearch = await search(state.search);
+    dispatch({ type: 'SET_VIDEOS', payload: resultSearch.result.items });
   };
 
   const handleOnChange = (e) => {
-    setQuery(e.target.value);
+    dispatch({ type: 'SET_SEARCH', payload: e.target.value });
   };
 
   return (
     <HeaderPanel data-testid="header">
-      <div className="ui icon button toggle-button">
+      <Btn className="ui icon button toggle-button">
         <i className="bars icon"></i>
-      </div>
+      </Btn>
       <SearchInput
         type="text"
         className="search-input"
         placeholder="Search..."
         onKeyDown={handleSearch}
-        value={query}
+        value={state.search}
         onChange={handleOnChange}
       />
       <ControlPanel>
-          <Toggle className="ui toggle checkbox">
-            <input type="checkbox" onChange={handleDarkMode} />
-            <label>Dark mode</label>
-          </Toggle>
-        <div className="ui red button">
+        <Toggle className="ui toggle checkbox">
+          <input type="checkbox" onChange={handleDarkMode} />
+          <label>Dark mode</label>
+        </Toggle>
+        <Btn className="ui red button">
           <i className="sign in alternate icon"></i>
           Sign In
-        </div>
+        </Btn>
       </ControlPanel>
     </HeaderPanel>
   );
