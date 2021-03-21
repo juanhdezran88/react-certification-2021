@@ -1,8 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import GlobalContext from '../../utils/globalContext';
 import Card from '../Card';
-import { INITIAL_STATE } from '../../utils/constants';
 
 const cardProps = {
   videoId: 'wdyg367t3',
@@ -13,23 +11,14 @@ const cardProps = {
   showDetail: jest.fn(),
 };
 
-const providerValues = {
-  state: INITIAL_STATE,
-  dispatch: jest.fn(),
-};
-
-const customRender = (ui, context) => {
-  return render(<GlobalContext.Provider value={context}>{ui}</GlobalContext.Provider>);
-};
-
 describe('Card component', () => {
   it('should render a card', () => {
-    customRender(<Card {...cardProps} />, providerValues);
+    render(<Card {...cardProps} />);
     expect(screen.getByTestId('card-wrapper')).toHaveClass('card');
   });
 
   it('should render a header', () => {
-    customRender(<Card {...cardProps} />, providerValues);
+    render(<Card {...cardProps} />);
     const headersList = screen.getByTestId('card-wrapper').querySelectorAll('.header');
     const [header] = headersList;
 
@@ -39,7 +28,7 @@ describe('Card component', () => {
   });
 
   it('should render a description', () => {
-    customRender(<Card {...cardProps} />, providerValues);
+    render(<Card {...cardProps} />);
     const descriptionsList = screen.getByTestId('card-wrapper').querySelectorAll('.description');
     const [description] = descriptionsList;
 
@@ -49,7 +38,7 @@ describe('Card component', () => {
   });
 
   it('should render an image', () => {
-    customRender(<Card {...cardProps} />, providerValues);
+    render(<Card {...cardProps} />);
     const imagesList = screen.getByTestId('card-wrapper').querySelectorAll('.image');
     const [image] = imagesList;
 
@@ -59,7 +48,7 @@ describe('Card component', () => {
   });
 
   it('should render a date', () => {
-    customRender(<Card {...cardProps} />, providerValues);
+    render(<Card {...cardProps} />);
     const publishedDatesList = screen.getByTestId('card-wrapper').querySelectorAll('.published-date');
     const [publishedDate] = publishedDatesList;
 
@@ -69,7 +58,7 @@ describe('Card component', () => {
   });
 
   it('should call showDetail function when click on it', () => {
-    customRender(<Card {...cardProps} />, providerValues);
+    render(<Card {...cardProps} />);
     const card = screen.getByTestId('card-wrapper');
     fireEvent.click(card);
     expect(cardProps.showDetail).toHaveBeenCalled();
