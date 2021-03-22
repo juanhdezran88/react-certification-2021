@@ -7,6 +7,7 @@ const Homepage = styled.section`
   height: 100%;
 `;
 const Main = styled.div`
+  background-color: ${(props) => props.theme.secondaryBg};
   display: flex;
   flex-direction: column;
   flex: 4;

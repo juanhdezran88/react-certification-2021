@@ -7,7 +7,7 @@ import Modal from '../../components/Modal';
 import { Homepage, Main, ContentWrapper } from './styled';
 
 function HomePage() {
-  const { videos } = useContext(GlobalContext);
+  const { state } = useContext(GlobalContext);
   const [showModal, setShowModal] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState({
     title: '',
@@ -31,7 +31,7 @@ function HomePage() {
         <Header />
         {showModal && <Modal {...selectedVideo} closeAction={closeDetail} />}
         <ContentWrapper>
-          {videos.map((video, i) => {
+          {state.videos.map((video, i) => {
             const {
               id: { videoId = '' } = {},
               snippet: {
