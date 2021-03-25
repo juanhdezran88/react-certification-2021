@@ -27,7 +27,6 @@ function HomePage() {
   };
 
   const showDetail = (data) => {
-    console.log(data);
     setSelectedVideo(data);
     setShowModal(true);
   };

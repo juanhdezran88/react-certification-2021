@@ -24,7 +24,7 @@ function GlobalProvider({ children }) {
 
   const getStorageState = () => {
     const storageState = storage.get(GLOBAL_STORAGE_KEY);
-    dispatch({ type: 'SET_STATE', payload: storageState });
+    dispatch({ type: 'SET_STATE', payload: storageState || INITIAL_STATE });
   };
 
   const addFavorite = (video) => {
