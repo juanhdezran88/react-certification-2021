@@ -46,4 +46,13 @@ const Btn = styled.div`
   background-color: ${(props) => props.theme.tertiaryBg} !important;
 `;
 
-export { HeaderPanel, SearchInput, ControlPanel, Toggle, Btn };
+const UserInfo = styled.div`
+  width: 12%;
+  color: #FFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+`;
+
+export { HeaderPanel, SearchInput, ControlPanel, Toggle, Btn, UserInfo };

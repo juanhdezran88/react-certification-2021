@@ -4,17 +4,18 @@ import Sidebar from '../../components/Sidebar';
 import Header from '../../components/Header';
 import Card from '../../components/Card';
 import Modal from '../../components/Modal';
-import { Homepage, Main, ContentWrapper } from './styled';
+import { Favoritespage, Main, ContentWrapper } from './styled';
+import { storage } from '../../utils/storage';
+import { FAVORITES_STORAGE_KEY } from '../../utils/constants';
 
-function HomePage() {
-  const { state, getStorageState, dispatch } = useGlobal();
+function FavoritesPage() {
+  const [videos] = useState(storage.get(FAVORITES_STORAGE_KEY) || []);
+  const { getStorageState, dispatch } = useGlobal();
   const [showModal, setShowModal] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState({
     title: '',
     description: '',
     videoId: '',
-    imageUrl: '',
-    publishedDate: '',
   });
 
   useEffect(() => {
@@ -27,44 +28,35 @@ function HomePage() {
   };
 
   const showDetail = (data) => {
-    console.log(data);
     setSelectedVideo(data);
     setShowModal(true);
   };
 
   return (
-    <Homepage className="homepage" data-testid="home-page">
+    <Favoritespage className="favoritespage" data-testid="favorites-page">
       <Sidebar />
       <Main>
         <Header />
         {showModal && <Modal {...selectedVideo} closeAction={closeDetail} />}
         <ContentWrapper>
-          {state.videos.map((video, i) => {
-            const {
-              id: { videoId = '' } = {},
-              snippet: {
-                title = '',
-                thumbnails: { medium: { url = '' } = {} } = {},
-                description = '',
-                publishedAt = '',
-              } = {},
-            } = video;
+          {videos.map((video, i) => {
+            const { videoId, title, description, imageURL = '', publishedAt = '' } = video;
             return (
               <Card
                 key={videoId + i}
                 videoId={videoId}
                 title={title}
-                imageURL={url}
+                imageURL={imageURL}
                 description={description}
-                publishedDate={new Date(publishedAt).toDateString()}
+                publishedDate={publishedAt ? new Date(publishedAt).toDateString() : ''}
                 showDetail={showDetail}
               />
             );
           })}
         </ContentWrapper>
       </Main>
-    </Homepage>
+    </Favoritespage>
   );
 }
 
-export default HomePage;
+export default FavoritesPage;

@@ -11,17 +11,23 @@ const Card = ({ videoId, title, imageURL, description, publishedDate, showDetail
           title,
           description,
           videoId,
+          imageURL,
+          publishedDate,
         });
       }}
     >
-      <a className="image">
-        <Image backgroundImage={imageURL} />
-      </a>
+      { imageURL &&
+        <a className="image">
+          <Image backgroundImage={imageURL} />
+        </a>
+      }
       <div className="content">
         <a className="header" href="/">{title}</a>
-        <div className="meta">
-          <a className="published-date">{publishedDate}</a>
-        </div>
+        { publishedDate &&
+          <div className="meta">
+            <a className="published-date">{publishedDate}</a>
+          </div>
+        }
         <div className="description">{description}</div>
       </div>
     </CardWrapper>

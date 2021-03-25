@@ -1,11 +1,15 @@
 import React, { useContext, useEffect } from 'react';
-import GlobalContext from '../../utils/globalContext';
-import { HeaderPanel, SearchInput, ControlPanel, Toggle, Btn } from './styled';
+import { useHistory } from 'react-router-dom';
+import { HeaderPanel, SearchInput, ControlPanel, Toggle, Btn, UserInfo } from './styled';
 import useYoutube from '../../utils/hooks/useYoutube';
+import { useGlobal } from '../../providers/Global/Global.provider';
+import { useAuth } from '../../providers/Auth';
 
 const Header = () => {
-  const { state, dispatch } = useContext(GlobalContext);
+  const { state, dispatch } = useGlobal();
   const { search, isYoutubeReady } = useYoutube();
+  const { authenticated, logout } = useAuth();
+  const history = useHistory();
 
   useEffect(() => {
     if(isYoutubeReady) {
@@ -33,9 +37,22 @@ const Header = () => {
     dispatch({ type: 'SET_SEARCH', payload: e.target.value });
   };
 
+  const handleSession = () => {
+    if (!authenticated) {
+      history.push('/login');
+    } else {
+      dispatch({ type: 'LOGOUT' });
+      logout();
+    }
+  };
+
+  const handleSidebar = () => {
+    dispatch({ type: 'SET_SIDEBAR', payload: !state.sidebar });
+  };
+
   return (
     <HeaderPanel data-testid="header">
-      <Btn className="ui icon button toggle-button">
+      <Btn className="ui icon button toggle-button" onClick={handleSidebar}>
         <i className="bars icon"></i>
       </Btn>
       <SearchInput
@@ -46,14 +63,24 @@ const Header = () => {
         value={state.search}
         onChange={handleOnChange}
       />
+      {authenticated && (
+        <UserInfo>
+          <img
+            class="ui avatar image"
+            src={state.user.avatarUrl}
+            alt={state.user.name}
+          />
+          <span>Welcome {state.user.name}</span>
+        </UserInfo>
+      )}
       <ControlPanel>
         <Toggle className="ui toggle checkbox">
-          <input type="checkbox" onChange={handleDarkMode} />
+          <input type="checkbox" onChange={handleDarkMode} />          
           <label>Dark mode</label>
         </Toggle>
-        <Btn className="ui red button">
+        <Btn className="ui red button" onClick={handleSession}>
           <i className="sign in alternate icon"></i>
-          Sign In
+          { authenticated ? 'Logout' : 'Sign In' }
         </Btn>
       </ControlPanel>
     </HeaderPanel>
