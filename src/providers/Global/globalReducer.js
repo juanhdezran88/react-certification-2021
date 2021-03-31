@@ -14,6 +14,8 @@ const GlobalReducer = (state, action) => {
       return { ...action.payload };
     case 'SET_SIDEBAR':
       return { ...state, sidebar: action.payload };
+    case 'SET_FAVORITES':
+      return { ...state, favorites: action.payload };
     default:
       return state;
   }

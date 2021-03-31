@@ -34,8 +34,9 @@ const ControlPanel = styled.div`
   flex: 2;
   justify-content: flex-end;
 
-@media only screen and (max-width: 640px) {
-  display: none;
+  @media only screen and (max-width: 640px) {
+    display: none;
+  }
 `;
 
 const Toggle = styled.div`
@@ -53,6 +54,7 @@ const UserInfo = styled.div`
   align-items: center;
   justify-content: center;
   font-size: 18px;
+  flex: 1;
 `;
 
 export { HeaderPanel, SearchInput, ControlPanel, Toggle, Btn, UserInfo };

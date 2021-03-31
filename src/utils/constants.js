@@ -8,6 +8,7 @@ const INITIAL_STATE = {
   search: 'Wizeline',
   user: {},
   sidebar: false,
+  favorites: [],
 };
 
 export { AUTH_STORAGE_KEY, INITIAL_STATE, GLOBAL_STORAGE_KEY, FAVORITES_STORAGE_KEY };

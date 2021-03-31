@@ -18,7 +18,7 @@ function AuthProvider({ children }) {
   const storageAuthState = storage.get(AUTH_STORAGE_KEY);
   const [authenticated, setAuthenticated] = useState(Boolean(storageAuthState) || false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const lastAuthState = storage.get(AUTH_STORAGE_KEY);
@@ -30,16 +30,16 @@ function AuthProvider({ children }) {
     setIsLoading(true);
     return loginApi(username, password)
       .then((data) => {
+        setError('');
         setIsLoading(false);
-        setError(null);
         setAuthenticated(true);
         storage.set(AUTH_STORAGE_KEY, true);
-        return data;
+        return { status: true, data };
       })
       .catch((error) => {
-        setIsLoading(false);
         setError(error.message);
-        return error;
+        setIsLoading(false);
+        return { status: false, message: error.message };
       });
   }, []);
 

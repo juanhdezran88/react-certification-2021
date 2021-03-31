@@ -29,23 +29,22 @@ function GlobalProvider({ children }) {
 
   const addFavorite = (video) => {
     const { videoId } = video;
-    const favorites = storage.get(FAVORITES_STORAGE_KEY);
+    const { favorites } = state;
     const result = favorites.filter((videoItem) => videoItem.videoId === videoId);
     if (result.length === 0) {
-      storage.set(FAVORITES_STORAGE_KEY, [...favorites, ...[video]]);
+      dispatch({ type: 'SET_FAVORITES', payload: [...favorites, ...[video]] });
     }
   };
 
   const removeFavorite = (videoId) => {
-    const favorites = storage.get(FAVORITES_STORAGE_KEY);
+    const { favorites } = state;
     const result = favorites.filter((video) => video.videoId !== videoId);
-    storage.set(FAVORITES_STORAGE_KEY, result);
+    dispatch({ type: 'SET_FAVORITES', payload: result });
   };
 
   const isInFavorites = (videoId) => {
-    const favorites = storage.get(FAVORITES_STORAGE_KEY);
-    if (!favorites) {
-      storage.set(FAVORITES_STORAGE_KEY, []);
+    const { favorites } = state;
+    if (favorites.length === 0) {
       return false;
     }
     const result = favorites.filter((video) => video.videoId === videoId);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, CardWrapper } from './styled';
+import { Image, CardWrapper, ImageLink } from './styled';
 
 const Card = ({ videoId, title, imageURL, description, publishedDate, showDetail }) => {
   return (
@@ -17,9 +17,9 @@ const Card = ({ videoId, title, imageURL, description, publishedDate, showDetail
       }}
     >
       { imageURL &&
-        <a className="image">
+        <ImageLink className="image">
           <Image backgroundImage={imageURL} />
-        </a>
+        </ImageLink>
       }
       <div className="content">
         <a className="header" href="/">{title}</a>

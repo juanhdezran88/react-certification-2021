@@ -1,18 +1,18 @@
-import React, { useContext, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { HeaderPanel, SearchInput, ControlPanel, Toggle, Btn, UserInfo } from './styled';
 import useYoutube from '../../utils/hooks/useYoutube';
 import { useGlobal } from '../../providers/Global/Global.provider';
 import { useAuth } from '../../providers/Auth';
+import LoginPage from '../../pages/Login';
 
-const Header = () => {
+const Header = ({ searchEnabled = true }) => {
   const { state, dispatch } = useGlobal();
   const { search, isYoutubeReady } = useYoutube();
   const { authenticated, logout } = useAuth();
-  const history = useHistory();
+  const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
-    if(isYoutubeReady) {
+    if(isYoutubeReady && searchEnabled) {
       executeSearch();
     }
   }, [isYoutubeReady]);
@@ -39,7 +39,7 @@ const Header = () => {
 
   const handleSession = () => {
     if (!authenticated) {
-      history.push('/login');
+      setShowLogin(true);
     } else {
       dispatch({ type: 'LOGOUT' });
       logout();
@@ -55,27 +55,25 @@ const Header = () => {
       <Btn className="ui icon button toggle-button" onClick={handleSidebar}>
         <i className="bars icon"></i>
       </Btn>
-      <SearchInput
-        type="text"
-        className="search-input"
-        placeholder="Search..."
-        onKeyDown={handleSearch}
-        value={state.search}
-        onChange={handleOnChange}
-      />
+      {searchEnabled && (
+        <SearchInput
+          type="text"
+          className="search-input"
+          placeholder="Search..."
+          onKeyDown={handleSearch}
+          value={state.search}
+          onChange={handleOnChange}
+        />
+      )}
       {authenticated && (
         <UserInfo>
-          <img
-            class="ui avatar image"
-            src={state.user.avatarUrl}
-            alt={state.user.name}
-          />
+          <img className="ui avatar image" src={state.user.avatarUrl} alt={state.user.name} />
           <span>Welcome {state.user.name}</span>
         </UserInfo>
       )}
       <ControlPanel>
         <Toggle className="ui toggle checkbox">
-          <input type="checkbox" onChange={handleDarkMode} />          
+          <input type="checkbox" onChange={handleDarkMode} />
           <label>Dark mode</label>
         </Toggle>
         <Btn className="ui red button" onClick={handleSession}>
@@ -83,6 +81,7 @@ const Header = () => {
           { authenticated ? 'Logout' : 'Sign In' }
         </Btn>
       </ControlPanel>
+      <LoginPage showLogin={showLogin} onClose={() => setShowLogin(false)} />
     </HeaderPanel>
   );
 };

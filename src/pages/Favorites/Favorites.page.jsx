@@ -5,12 +5,9 @@ import Header from '../../components/Header';
 import Card from '../../components/Card';
 import Modal from '../../components/Modal';
 import { Favoritespage, Main, ContentWrapper } from './styled';
-import { storage } from '../../utils/storage';
-import { FAVORITES_STORAGE_KEY } from '../../utils/constants';
 
 function FavoritesPage() {
-  const [videos] = useState(storage.get(FAVORITES_STORAGE_KEY) || []);
-  const { getStorageState, dispatch } = useGlobal();
+  const { state, getStorageState, dispatch } = useGlobal();
   const [showModal, setShowModal] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState({
     title: '',
@@ -36,10 +33,10 @@ function FavoritesPage() {
     <Favoritespage className="favoritespage" data-testid="favorites-page">
       <Sidebar />
       <Main>
-        <Header />
+        <Header searchEnabled={false} />
         {showModal && <Modal {...selectedVideo} closeAction={closeDetail} />}
         <ContentWrapper>
-          {videos.map((video, i) => {
+          {state.favorites.map((video, i) => {
             const { videoId, title, description, imageURL = '', publishedAt = '' } = video;
             return (
               <Card
