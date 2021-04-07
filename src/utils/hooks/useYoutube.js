@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-const path = 'https://www.googleapis.com/youtube/v3', maxResults = 20; 
-
+const path = 'https://www.googleapis.com/youtube/v3', maxResults = 20;
 
 
 const useYoutube = () => {

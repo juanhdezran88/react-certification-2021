@@ -9,13 +9,15 @@ import { useGlobal } from '../../providers/Global/Global.provider';
 function App() {
   const { state } = useGlobal();
   return (
-    <ThemeProvider theme={Themes[state.theme]}>
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes />
-        </AuthProvider>
-      </BrowserRouter>
-    </ThemeProvider>
+    <div data-testid="app-root">
+      <ThemeProvider theme={Themes[state.theme]}>
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes />
+          </AuthProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </div>
   );
 }
 

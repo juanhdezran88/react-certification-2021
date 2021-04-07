@@ -6,7 +6,7 @@ function SecretPage() {
   const { getStorageState } = useGlobal();
   useEffect(() => getStorageState(), []);
   return (
-    <section>
+    <section data-testid="secret-page">
       <pre>
         welcome, voyager...
         <Link to="/"> ← go back</Link>
