@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import './NotFound.styles.css';
+import { useGlobal } from '../../providers/Global/Global.provider';
 
 function NotFoundPage() {
+  const { getStorageState } = useGlobal();
+  useEffect(() => getStorageState(), []);
   return (
-    <section className="not-found">
+    <section className="not-found" data-testid="not-found-page">
       <Link to="/" className="home-link">
         home
       </Link>

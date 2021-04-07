@@ -1,8 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { act } from 'react-dom/test-utils';
 import Header from '../Header';
-import GlobalContext from '../../utils/globalContext';
-import { INITIAL_STATE } from '../../utils/constants';
+import GlobalProvider from '../../providers/Global/Global.provider';
+import AuthProvider from '../../providers/Auth/Auth.provider';
 
 const mockSearchFn = jest.fn(() => {
   return {
@@ -21,13 +23,20 @@ jest.mock('../../utils/hooks/useYoutube', () => {
   });
 });
 
-const providerValues = {
-  state: INITIAL_STATE,
-  dispatch: jest.fn(),
+const customRender = (ui) => {
+  return act(() => {
+    render(
+      <BrowserRouter>
+        <GlobalProvider>
+          <AuthProvider>{ui}</AuthProvider>
+        </GlobalProvider>
+      </BrowserRouter>
+    );
+  });
 };
 
-const customRender = (ui) => {
-  return render(<GlobalContext.Provider value={providerValues}>{ui}</GlobalContext.Provider>);
+const getBySelector = (selector) => {
+  return screen.getByTestId('header').querySelectorAll(selector);
 };
 
 describe('Header component', () => {
@@ -38,19 +47,19 @@ describe('Header component', () => {
 
   it('should render a search input', () => {
     customRender(<Header />);
-    const [input] = screen.getByTestId('header').querySelectorAll('.search-input');
+    const [input] = getBySelector('.search-input');
     expect(input).toHaveClass('search-input');
   });
 
   it('should render a toggle checkbox', () => {
     customRender(<Header />);
-    const [toggle] = screen.getByTestId('header').querySelectorAll('.toggle');
+    const [toggle] = getBySelector('.toggle');
     expect(toggle).toHaveClass('checkbox');
   });
 
   it('should render a toggle checkbox', () => {
     customRender(<Header />);
-    const [toggle] = screen.getByTestId('header').querySelectorAll('.toggle');
+    const [toggle] = getBySelector('.toggle');
     expect(toggle).toHaveClass('checkbox');
     expect(toggle).toHaveTextContent('Dark mode');
   });
@@ -64,7 +73,7 @@ describe('Header component', () => {
 
   it('should call search function when the user hits the enter key', () => {
     customRender(<Header />);
-    const [input] = screen.getByTestId('header').querySelectorAll('.search-input');
+    const [input] = getBySelector('.search-input');
     fireEvent.change(input, { taget: { value: 'wizeline' } });
     fireEvent.keyPress(input, { key: "Enter", code: 13, charCode: 13 });
     expect(mockSearchFn).toHaveBeenCalled();
